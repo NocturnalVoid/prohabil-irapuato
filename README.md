@@ -10,20 +10,19 @@ Plataforma de contratación de oficios para Irapuato, Guanajuato.
 El proyecto utiliza una arquitectura de microservicios con un contenedor para el servidor web y otro para la base de datos.
 
 ```text
-mi-proyecto-docker/
+mi-proyecto-docker/        ← Raíz del proyecto web (Reemplaza a htdocs)
 ├── docker-compose.yml     ← Orquestador de servicios (Web + BD)
 ├── Dockerfile             ← Construcción de imagen PHP 8.2 + Apache + Drivers
-└── src/                   ← Raíz del proyecto web (Reemplaza a htdocs)
-    ├── index.html         ← Página principal (landing + modales)
-    ├── dashboard.php      ← Panel de usuario
-    ├── logout.php         ← Script de cierre de sesión
-    ├── sql/
-    │   └── prohabil.sql   ← Script de BD (Auto-ejecutado por Docker al iniciar)
-    └── php/
-        ├── config.php       ← Configuración y conexión PDO
-        ├── registro.php     ← Endpoint POST: registrar usuario
-        ├── login.php        ← Endpoint POST: iniciar sesión
-        └── trabajadores.php ← Endpoint GET: listar trabajadores
+├── index.html         ← Página principal (landing + modales)
+├── dashboard.php      ← Panel de usuario
+├── logout.php         ← Script de cierre de sesión
+├── sql/
+│   └── prohabil.sql   ← Script de BD (Auto-ejecutado por Docker al iniciar)
+└── php/
+    ├── config.php       ← Configuración y conexión PDO
+    ├── registro.php     ← Endpoint POST: registrar usuario
+    ├── login.php        ← Endpoint POST: iniciar sesión
+    └── trabajadores.php ← Endpoint GET: listar trabajadores
 
 ---
 
