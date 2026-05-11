@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProHabil — Oficios de Confianza en Irapuato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================
+       TOKENS & RESET
+    ============================================ */
+    :root {
+      --amber:     #F5A623;
+      --amber-dk:  #C77D0A;
+      --ink:       #1A1208;
+      --earth:     #3D2B1F;
+      --cream:     #FBF5EC;
+      --cream-dk:  #F0E6D3;
+      --rust:      #C0452A;
+      --sage:      #4A7C59;
+      --sky:       #2B6CB0;
+      --white:     #FFFFFF;
+      --shadow:    rgba(26,18,8,.14);
+      --r-sm:  6px;
+      --r-md: 14px;
+      --r-lg: 24px;
+      --ff-head: 'Syne', sans-serif;
+      --ff-body: 'DM Sans', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-body);
+      background: var(--cream);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; font-family: var(--ff-body); border: none; background: none; }
+
+    /* ============================================
+       NOISE TEXTURE OVERLAY
+    ============================================ */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ============================================
+       NAV
+    ============================================ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 60px);
+      height: 68px;
+      background: rgba(251,245,236,.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid var(--cream-dk);
+    }
+    .nav-logo {
+      font-family: var(--ff-head);
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -.04em;
+      color: var(--ink);
+    }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--earth);
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--amber-dk); }
+    .btn-nav {
+      padding: 9px 22px;
+      background: var(--amber);
+      color: var(--ink);
+      font-weight: 600;
+      font-size: .88rem;
+      border-radius: 50px;
+      transition: background .2s, transform .15s;
+    }
+    .btn-nav:hover { background: var(--amber-dk); transform: translateY(-1px); }
+
+    /* ============================================
+       HERO
+    ============================================ */
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 40px;
+      padding: clamp(60px, 8vw, 120px) clamp(20px, 6vw, 80px);
+      min-height: calc(100vh - 68px);
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -100px; top: -100px;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,166,35,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-text { position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      background: var(--amber);
+      color: var(--ink);
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before { content: '📍'; font-size: .9em; }
+    h1 {
+      font-family: var(--ff-head);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: normal;
+      color: var(--amber-dk);
+      position: relative;
+      display: inline-block;
+    }
+    h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--earth);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 14px 32px;
+      background: var(--ink);
+      color: var(--cream);
+      font-weight: 600;
+      font-size: .95rem;
+      border-radius: 50px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    .btn-primary:hover {
+      background: var(--earth);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(26,18,8,.22);
+    }
+    .btn-outline {
+      padding: 14px 32px;
+      border: 2px solid var(--ink);
+      color: var(--ink);
+      font-weight: 600;
+      font-size: .95rem;
+      border-radius: 50px;
+      transition: background .2s, color .2s, transform .15s;
+    }
+    .btn-outline:hover {
+      background: var(--ink);
+      color: var(--cream);
+      transform: translateY(-2px);
+    }
+    .hero-stats {
+      display: flex; gap: 32px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--cream-dk);
+    }
+    .stat-num {
+      font-family: var(--ff-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .stat-lbl { font-size: .8rem; color: var(--earth); margin-top: 2px; }
+
+    /* Hero illustration */
+    .hero-visual {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card-stack { position: relative; width: 360px; height: 420px; margin: auto; }
+    .hero-card {
+      position: absolute;
+      background: var(--white);
+      border-radius: var(--r-lg);
+      box-shadow: 0 12px 40px var(--shadow);
+      padding: 24px;
+      transition: transform .3s;
+    }
+    .hero-card:nth-child(1) {
+      width: 280px; bottom: 0; left: 20px;
+      transform: rotate(-4deg);
+      background: var(--earth); color: var(--cream);
+    }
+    .hero-card:nth-child(2) {
+      width: 310px; top: 30px; right: 0;
+      transform: rotate(2.5deg);
+    }
+    .hero-card:nth-child(3) {
+      width: 260px; top: 120px; left: 0;
+      transform: rotate(-1.5deg);
+      background: var(--amber);
+    }
+    .hero-card-stack:hover .hero-card:nth-child(1) { transform: rotate(-6deg) translateY(8px); }
+    .hero-card-stack:hover .hero-card:nth-child(2) { transform: rotate(4deg) translateY(-8px); }
+    .hero-card-stack:hover .hero-card:nth-child(3) { transform: rotate(-3deg) translateX(-6px); }
+    .hc-icon { font-size: 2rem; margin-bottom: 8px; }
+    .hc-name { font-family: var(--ff-head); font-weight: 700; font-size: 1.1rem; }
+    .hc-role { font-size: .82rem; opacity: .7; margin-top: 2px; }
+    .hc-stars { font-size: .85rem; margin-top: 8px; color: var(--amber); }
+    .hc-stars span { color: inherit; opacity: .6; margin-left: 4px; }
+
+    /* ============================================
+       SECTION TITLE
+    ============================================ */
+    .section-label {
+      display: inline-block;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--amber-dk);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: var(--ff-head);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: var(--earth);
+      margin-top: 10px;
+      max-width: 520px;
+    }
+
+    /* ============================================
+       OFICIOS GRID
+    ============================================ */
+    .section-oficios {
+      padding: clamp(60px, 8vw, 100px) clamp(20px, 6vw, 80px);
+    }
+    .oficios-header { margin-bottom: 48px; }
+    .oficios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .oficio-card {
+      background: var(--white);
+      border-radius: var(--r-md);
+      padding: 28px 20px;
+      text-align: center;
+      border: 1.5px solid transparent;
+      box-shadow: 0 2px 12px var(--shadow);
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      cursor: pointer;
+    }
+    .oficio-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--amber);
+      box-shadow: 0 8px 28px rgba(245,166,35,.18);
+    }
+    .oficio-card .icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .oficio-card .label {
+      font-family: var(--ff-head);
+      font-weight: 600;
+      font-size: .92rem;
+      color: var(--ink);
+    }
+
+    /* ============================================
+       HOW IT WORKS
+    ============================================ */
+    .section-how {
+      background: var(--ink);
+      color: var(--cream);
+      padding: clamp(60px, 8vw, 100px) clamp(20px, 6vw, 80px);
+    }
+    .section-how .section-title { color: var(--cream); }
+    .section-how .section-sub   { color: rgba(251,245,236,.65); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-top: 56px;
+    }
+    .step { position: relative; }
+    .step-num {
+      font-family: var(--ff-head);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .step h3 {
+      font-family: var(--ff-head);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--cream);
+    }
+    .step p { font-size: .9rem; line-height: 1.6; color: rgba(251,245,236,.6); }
+
+    /* ============================================
+       MODAL SISTEMA
+    ============================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,18,8,.55);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn .25s ease;
+    }
+    .modal-overlay.open { display: flex; }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+    .modal {
+      background: var(--cream);
+      border-radius: var(--r-lg);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 32px 80px rgba(26,18,8,.3);
+      animation: slideUp .3s cubic-bezier(.2,.8,.2,1);
+    }
+    @keyframes slideUp { from { opacity:0; transform:translateY(30px) } to { opacity:1; transform:translateY(0) } }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 32px 0;
+    }
+    .modal-head h2 {
+      font-family: var(--ff-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+    .modal-close {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--cream-dk);
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: var(--earth); color: var(--cream); }
+    .modal-body { padding: 24px 32px 32px; }
+
+    /* ============================================
+       TABS (cliente / trabajador)
+    ============================================ */
+    .tabs {
+      display: flex;
+      background: var(--cream-dk);
+      border-radius: 50px;
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+    .tab {
+      flex: 1; text-align: center;
+      padding: 9px 0;
+      border-radius: 50px;
+      font-size: .88rem;
+      font-weight: 600;
+      transition: background .2s, color .2s;
+      color: var(--earth);
+    }
+    .tab.active { background: var(--ink); color: var(--cream); }
+
+    /* ============================================
+       FORMULARIO
+    ============================================ */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--earth);
+      letter-spacing: .02em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--cream-dk);
+      border-radius: var(--r-sm);
+      background: var(--white);
+      font-family: var(--ff-body);
+      font-size: .92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(245,166,35,.15);
+    }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .form-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%233D2B1F'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px; padding-right: 38px; }
+
+    /* Sección solo para trabajador */
+    #worker-fields { display: none; }
+    #worker-fields.visible { display: block; }
+    .separator {
+      border: none;
+      border-top: 1.5px dashed var(--cream-dk);
+      margin: 18px 0;
+    }
+    .separator-label {
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--amber-dk);
+      margin: -22px auto 14px;
+      background: var(--cream);
+      width: fit-content;
+      padding: 0 10px;
+      display: block;
+    }
+
+    /* Precios */
+    .price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .input-prefix-wrap { position: relative; }
+    .input-prefix {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      font-size: .85rem; font-weight: 600; color: var(--earth);
+    }
+    .input-prefix-wrap input { padding-left: 26px; }
+
+    .btn-full {
+      display: block; width: 100%;
+      padding: 14px;
+      background: var(--amber);
+      color: var(--ink);
+      font-family: var(--ff-head);
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: var(--r-sm);
+      text-align: center;
+      transition: background .2s, transform .15s;
+      margin-top: 8px;
+    }
+    .btn-full:hover { background: var(--amber-dk); transform: translateY(-1px); }
+    .btn-full:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .form-footer {
+      text-align: center;
+      font-size: .85rem;
+      color: var(--earth);
+      margin-top: 16px;
+    }
+    .form-footer a { font-weight: 600; color: var(--amber-dk); }
+
+    /* Password toggle */
+    .pass-wrap { position: relative; }
+    .pass-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 1rem; cursor: pointer; color: var(--earth); padding: 4px;
+    }
+
+    /* Alert */
+    .alert {
+      padding: 11px 14px;
+      border-radius: var(--r-sm);
+      font-size: .87rem;
+      margin-bottom: 14px;
+      display: none;
+    }
+    .alert.show { display: block; }
+    .alert-error { background: #FDEDED; border: 1px solid #F5C6CB; color: var(--rust); }
+    .alert-success { background: #EDF7ED; border: 1px solid #B8E0B9; color: var(--sage); }
+
+    /* ============================================
+       FOOTER
+    ============================================ */
+    footer {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 48px clamp(20px, 6vw, 80px) 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand p { font-size: .88rem; line-height: 1.6; color: rgba(251,245,236,.55); margin-top: 10px; max-width: 280px; }
+    .footer-col h4 {
+      font-family: var(--ff-head);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 8px; }
+    .footer-col ul li a { font-size: .87rem; color: rgba(251,245,236,.55); transition: color .2s; }
+    .footer-col ul li a:hover { color: var(--amber); }
+    .footer-bottom {
+      border-top: 1px solid rgba(251,245,236,.1);
+      padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: .8rem;
+      color: rgba(251,245,236,.35);
+    }
+    .footer-bottom .nav-logo { font-size: 1.1rem; }
+
+    /* ============================================
+       TOAST
+    ============================================ */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 14px 20px;
+      border-radius: var(--r-md);
+      font-size: .9rem;
+      font-weight: 500;
+      box-shadow: 0 8px 32px var(--shadow);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .35s;
+      max-width: 320px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success::before { content: '✅ '; }
+    .toast.error::before { content: '❌ '; }
+
+    /* ============================================
+       RESPONSIVE
+    ============================================ */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .nav-links .btn-nav { display: none; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAV ========== -->
+  <nav>
+    <div class="nav-logo">Pro<span>Habil</span></div>
+    <div class="nav-links">
+      <a href="#oficios">Oficios</a>
+      <a href="#como-funciona">¿Cómo funciona?</a>
+      <button class="btn-nav" onclick="openModal('register')">Únete gratis</button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">Irapuato, Guanajuato</div>
+      <h1>Encuentra el<br/>oficio que<br/><em>necesitas</em></h1>
+      <p class="hero-sub">
+        Conectamos a los mejores albañiles, carpinteros, electricistas y más
+        oficios con quienes los necesitan en Irapuato. Rápido, seguro y de confianza.
+      </p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="openModal('register')">Registrarme ahora</button>
+        <button class="btn-outline" onclick="openModal('login')">Iniciar sesión</button>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">150+</div>
+          <div class="stat-lbl">Trabajadores</div>
+        </div>
+        <div>
+          <div class="stat-num">15</div>
+          <div class="stat-lbl">Oficios disponibles</div>
+        </div>
+        <div>
+          <div class="stat-num">500+</div>
+          <div class="stat-lbl">Trabajos completados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-card-stack">
+        <div class="hero-card">
+          <div class="hc-icon">⚡</div>
+          <div class="hc-name">Roberto Silva</div>
+          <div class="hc-role">Electricista · 8 años exp.</div>
+          <div class="hc-stars">★★★★★ <span>48 trabajos</span></div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-icon">🧱</div>
+          <div class="hc-name">Miguel Hernández</div>
+          <div class="hc-role">Albañil · 12 años exp.</div>
+          <div class="hc-stars" style="color:var(--amber-dk)">★★★★★ <span style="color:var(--earth)">72 trabajos</span></div>
+        </div>
+        <div class="hero-card">
+          <div class="hc-icon" style="color:var(--ink)">🪵</div>
+          <div class="hc-name" style="color:var(--ink)">Ana Reyes</div>
+          <div class="hc-role" style="color:var(--earth)">Carpintera · 5 años exp.</div>
+          <div class="hc-stars" style="color:var(--rust)">★★★★☆ <span style="color:var(--earth)">31 trabajos</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== OFICIOS ========== -->
+  <section class="section-oficios" id="oficios">
+    <div class="oficios-header">
+      <span class="section-label">Oficios disponibles</span>
+      <h2 class="section-title">¿Qué servicio necesitas?</h2>
+      <p class="section-sub">Explora los profesionales de confianza disponibles en Irapuato.</p>
+    </div>
+    <div class="oficios-grid" id="oficiosGrid">
+      <!-- Renderizado por JS -->
+    </div>
+  </section>
+
+  <!-- ========== CÓMO FUNCIONA ========== -->
+  <section class="section-how" id="como-funciona">
+    <span class="section-label" style="color:var(--amber)">Simple y rápido</span>
+    <h2 class="section-title">¿Cómo funciona?</h2>
+    <p class="section-sub">En tres pasos tienes al experto que necesitas en tu puerta.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Regístrate gratis</h3>
+        <p>Crea tu cuenta como cliente o trabajador. Solo necesitas tu nombre, correo y teléfono.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Encuentra o publica</h3>
+        <p>Clientes buscan al profesional por oficio. Trabajadores publican su perfil y tarifas.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Contrata y califica</h3>
+        <p>Contacta directamente, acuerda precio y al finalizar deja tu reseña para la comunidad.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>Crece con nosotros</h3>
+        <p>Los trabajadores con mejores calificaciones aparecen primero. Tu reputación vale.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">Pro<span>Habil</span></div>
+        <p>La plataforma de oficios de confianza para Irapuato y su área metropolitana, Guanajuato, México.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Plataforma</h4>
+        <ul>
+          <li><a href="#oficios">Ver oficios</a></li>
+          <li><a href="#" onclick="openModal('register')">Registrarme</a></li>
+          <li><a href="#" onclick="openModal('login')">Iniciar sesión</a></li>
+          <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:hola@prohabil.mx">hola@prohabil.mx</a></li>
+          <li><a href="tel:+524621234567">+52 462 123 4567</a></li>
+          <li><a href="#">Irapuato, Guanajuato</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 ProHabil — Todos los derechos reservados</span>
+      <div class="nav-logo" style="font-size:.95rem">Pro<span>Habil</span></div>
+    </div>
+  </footer>
+
+  <!-- ========== MODAL ========== -->
+  <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2 id="modalTitle">Iniciar sesión</h2>
+        <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- ALERT -->
+        <div class="alert alert-error" id="alertBox"></div>
+
+        <!-- TABS -->
+        <div class="tabs" id="tipeTabs" style="display:none">
+          <button class="tab active" onclick="setTipo('cliente')" id="tabCliente">👤 Cliente</button>
+          <button class="tab" onclick="setTipo('trabajador')" id="tabTrabajador">🔧 Trabajador</button>
+        </div>
+
+        <!-- ===== FORM LOGIN ===== -->
+        <form id="formLogin" onsubmit="submitLogin(event)">
+          <div class="form-group">
+            <label>Correo electrónico</label>
+            <input type="email" id="l_correo" placeholder="tu@correo.com" required />
+          </div>
+          <div class="form-group">
+            <label>Contraseña</label>
+            <div class="pass-wrap">
+              <input type="password" id="l_pass" placeholder="••••••••" required />
+              <span class="pass-toggle" onclick="togglePass('l_pass', this)">👁</span>
+            </div>
+          </div>
+          <button type="submit" class="btn-full" id="btnLogin">Entrar</button>
+          <p class="form-footer">¿No tienes cuenta? <a href="#" onclick="openModal('register')">Regístrate gratis</a></p>
+        </form>
+
+        <!-- ===== FORM REGISTRO ===== -->
+        <form id="formRegistro" onsubmit="submitRegistro(event)" style="display:none">
+          <input type="hidden" id="r_tipo" value="cliente" />
+
+          <!-- Datos personales -->
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre(s) *</label>
+              <input type="text" id="r_nombre" placeholder="Juan Carlos" required />
+            </div>
+            <div class="form-group">
+              <label>Apellido paterno *</label>
+              <input type="text" id="r_ap_pat" placeholder="García" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Apellido materno</label>
+              <input type="text" id="r_ap_mat" placeholder="Torres" />
+            </div>
+            <div class="form-group">
+              <label>Fecha de nacimiento</label>
+              <input type="date" id="r_fecha_nac" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Teléfono *</label>
+              <input type="tel" id="r_tel" placeholder="4621234567" maxlength="15" required />
+            </div>
+            <div class="form-group">
+              <label>Género</label>
+              <select id="r_genero">
+                <option value="prefiero_no_decir">Prefiero no decir</option>
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Correo electrónico *</label>
+            <input type="email" id="r_correo" placeholder="tu@correo.com" required />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Colonia</label>
+              <input type="text" id="r_colonia" placeholder="Centro, Paraíso…" />
+            </div>
+            <div class="form-group">
+              <label>Dirección (referencia)</label>
+              <input type="text" id="r_direccion" placeholder="Calle, número" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Contraseña *</label>
+              <div class="pass-wrap">
+                <input type="password" id="r_pass" placeholder="Mín. 8 caracteres" required />
+                <span class="pass-toggle" onclick="togglePass('r_pass', this)">👁</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Confirmar contraseña *</label>
+              <div class="pass-wrap">
+                <input type="password" id="r_pass2" placeholder="Repite tu contraseña" required />
+                <span class="pass-toggle" onclick="togglePass('r_pass2', this)">👁</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== CAMPOS EXCLUSIVOS TRABAJADOR ===== -->
+          <div id="worker-fields">
+            <hr class="separator" />
+            <span class="separator-label">Información de tu oficio</span>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Oficio principal *</label>
+                <select id="r_oficio" required>
+                  <option value="">Selecciona…</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Años de experiencia</label>
+                <input type="number" id="r_exp" min="0" max="60" placeholder="5" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Descripción de tus servicios</label>
+              <textarea id="r_desc" placeholder="Cuéntanos en qué eres experto, qué herramientas tienes, tus trabajos anteriores…"></textarea>
+            </div>
+
+            <div class="form-row price-row">
+              <div class="form-group">
+                <label>Precio por hora (MXN)</label>
+                <div class="input-prefix-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="r_precio_hora" min="0" step="10" placeholder="150" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Precio por día (MXN)</label>
+                <div class="input-prefix-wrap">
+                  <span class="input-prefix">$</span>
+                  <input type="number" id="r_precio_dia" min="0" step="50" placeholder="800" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-full" id="btnRegistro">Crear cuenta gratis</button>
+          <p class="form-footer">¿Ya tienes cuenta? <a href="#" onclick="openModal('login')">Inicia sesión</a></p>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ========== JS ========== -->
+  <script>
+    // ============================================
+    // DATOS DE OFICIOS
+    // ============================================
+    const OFICIOS = [
+      { id:1,  nombre:'Albañil',       icono:'🧱' },
+      { id:2,  nombre:'Carpintero',    icono:'🪵' },
+      { id:3,  nombre:'Electricista',  icono:'⚡' },
+      { id:4,  nombre:'Plomero',       icono:'🔧' },
+      { id:5,  nombre:'Pintor',        icono:'🎨' },
+      { id:6,  nombre:'Herrero',       icono:'⚙️' },
+      { id:7,  nombre:'Jardinero',     icono:'🌿' },
+      { id:8,  nombre:'Mecánico',      icono:'🔩' },
+      { id:9,  nombre:'Fontanero',     icono:'🚿' },
+      { id:10, nombre:'Techador',      icono:'🏠' },
+      { id:11, nombre:'Cerrajero',     icono:'🔐' },
+      { id:12, nombre:'Yesero',        icono:'🪣' },
+      { id:13, nombre:'Soldador',      icono:'🔥' },
+      { id:14, nombre:'Gasfitero',     icono:'🛠️' },
+      { id:15, nombre:'Tapicero',      icono:'🛋️' },
+    ];
+
+    // Renderizar cards de oficios
+    const grid = document.getElementById('oficiosGrid');
+    OFICIOS.forEach(o => {
+      const card = document.createElement('div');
+      card.className = 'oficio-card';
+      card.innerHTML = `<div class="icon">${o.icono}</div><div class="label">${o.nombre}</div>`;
+      card.onclick = () => { openModal('register'); setTipo('trabajador'); };
+      grid.appendChild(card);
+    });
+
+    // Popular select de oficios en el form
+    const selOficio = document.getElementById('r_oficio');
+    OFICIOS.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.id;
+      opt.textContent = `${o.icono} ${o.nombre}`;
+      selOficio.appendChild(opt);
+    });
+
+    // ============================================
+    // MODAL
+    // ============================================
+    let currentModal = null; // 'login' | 'register'
+
+    function openModal(type) {
+      currentModal = type;
+      const overlay = document.getElementById('modalOverlay');
+      const title   = document.getElementById('modalTitle');
+      const fLogin  = document.getElementById('formLogin');
+      const fReg    = document.getElementById('formRegistro');
+      const tabs    = document.getElementById('tipeTabs');
+
+      clearAlert();
+
+      if (type === 'login') {
+        title.textContent = 'Bienvenido de nuevo';
+        fLogin.style.display = 'block';
+        fReg.style.display   = 'none';
+        tabs.style.display   = 'none';
+      } else {
+        title.textContent = 'Crea tu cuenta';
+        fLogin.style.display = 'none';
+        fReg.style.display   = 'block';
+        tabs.style.display   = 'flex';
+        setTipo('cliente');
+      }
+
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ============================================
+    // TABS: cliente / trabajador
+    // ============================================
+    function setTipo(tipo) {
+      document.getElementById('r_tipo').value = tipo;
+      document.getElementById('tabCliente').classList.toggle('active', tipo === 'cliente');
+      document.getElementById('tabTrabajador').classList.toggle('active', tipo === 'trabajador');
+      const wf = document.getElementById('worker-fields');
+      const ro = document.getElementById('r_oficio');
+      if (tipo === 'trabajador') {
+        wf.classList.add('visible');
+        ro.required = true;
+      } else {
+        wf.classList.remove('visible');
+        ro.required = false;
+      }
+    }
+
+    // ============================================
+    // PASSWORD TOGGLE
+    // ============================================
+    function togglePass(id, btn) {
+      const inp = document.getElementById(id);
+      const isPass = inp.type === 'password';
+      inp.type = isPass ? 'text' : 'password';
+      btn.textContent = isPass ? '🙈' : '👁';
+    }
+
+    // ============================================
+    // ALERT & TOAST
+    // ============================================
+    function showAlert(msg) {
+      const el = document.getElementById('alertBox');
+      el.textContent = msg;
+      el.className = 'alert alert-error show';
+    }
+    function showAlertSuccess(msg) {
+      const el = document.getElementById('alertBox');
+      el.textContent = msg;
+      el.className = 'alert alert-success show';
+    }
+    function clearAlert() {
+      document.getElementById('alertBox').className = 'alert';
+    }
+
+    let toastTimer = null;
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.className = 'toast', 3500);
+    }
+
+    // ============================================
+    // LOGIN
+    // ============================================
+    async function submitLogin(e) {
+      e.preventDefault();
+      clearAlert();
+      const btn = document.getElementById('btnLogin');
+      btn.disabled = true;
+      btn.textContent = 'Entrando…';
+
+      const correo    = document.getElementById('l_correo').value.trim();
+      const contrasena = document.getElementById('l_pass').value;
+
+      try {
+        const res = await fetch('php/login.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ correo, contrasena })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          showAlertSuccess(`¡Hola, ${data.data.nombre}! Redirigiendo…`);
+          setTimeout(() => {
+            window.location.href = 'dashboard.php';
+          }, 1200);
+        } else {
+          showAlert(data.mensaje);
+        }
+      } catch (err) {
+        showAlert('Error de conexión. Verifica que el servidor esté activo.');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+
+    // ============================================
+    // REGISTRO
+    // ============================================
+    async function submitRegistro(e) {
+      e.preventDefault();
+      clearAlert();
+
+      const pass  = document.getElementById('r_pass').value;
+      const pass2 = document.getElementById('r_pass2').value;
+
+      if (pass !== pass2) { showAlert('Las contraseñas no coinciden.'); return; }
+      if (pass.length < 8) { showAlert('La contraseña debe tener al menos 8 caracteres.'); return; }
+
+      const btn = document.getElementById('btnRegistro');
+      btn.disabled = true;
+      btn.textContent = 'Creando cuenta…';
+
+      const tipo = document.getElementById('r_tipo').value;
+
+      const payload = {
+        tipo,
+        nombre:           document.getElementById('r_nombre').value.trim(),
+        apellido_paterno: document.getElementById('r_ap_pat').value.trim(),
+        apellido_materno: document.getElementById('r_ap_mat').value.trim(),
+        telefono:         document.getElementById('r_tel').value.trim(),
+        correo:           document.getElementById('r_correo').value.trim(),
+        contrasena:       pass,
+        colonia:          document.getElementById('r_colonia').value.trim(),
+        direccion:        document.getElementById('r_direccion').value.trim(),
+        fecha_nacimiento: document.getElementById('r_fecha_nac').value,
+        genero:           document.getElementById('r_genero').value,
+      };
+
+      if (tipo === 'trabajador') {
+        payload.oficio_id        = document.getElementById('r_oficio').value;
+        payload.años_experiencia = document.getElementById('r_exp').value;
+        payload.descripcion      = document.getElementById('r_desc').value.trim();
+        payload.precio_hora      = document.getElementById('r_precio_hora').value;
+        payload.precio_dia       = document.getElementById('r_precio_dia').value;
+      }
+
+      try {
+        const res = await fetch('php/registro.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          showAlertSuccess('¡Cuenta creada exitosamente! 🎉');
+          setTimeout(() => {
+            window.location.href = 'dashboard.php';
+          }, 1400);
+        } else {
+          showAlert(data.mensaje);
+        }
+      } catch (err) {
+        showAlert('Error de conexión. Verifica que el servidor PHP esté activo.');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Crear cuenta gratis';
+    }
+  </script>
+</body>
+</html>
