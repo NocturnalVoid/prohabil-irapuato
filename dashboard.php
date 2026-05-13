@@ -61,7 +61,7 @@ $iniciales = strtoupper(mb_substr($user['nombre'],0,1) . mb_substr($user['apelli
       --sage:     #4A7C59;
       --white:    #FFFFFF;
       --shadow:   rgba(26,18,8,.12);
-      --ff-head: 'Syne', sans-serif;
+      --ff-head: 'Inter', sans-serif;
       --ff-body: 'DM Sans', sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
@@ -433,7 +433,7 @@ $iniciales = strtoupper(mb_substr($user['nombre'],0,1) . mb_substr($user['apelli
   </nav>
 
   <div class="sidebar-footer">
-    <button class="btn-logout" onclick="cerrarSesion()">
+    <button class="btn-logout" onclick="cerrarSesion(this)">
       <span>🚪</span> Cerrar sesión
     </button>
   </div>
@@ -662,9 +662,18 @@ function showSection(name) {
 }
 
 // ── CERRAR SESIÓN ──
-async function cerrarSesion() {
-  const r = await fetch('php/logout.php');
-  if (r.ok) window.location.href = 'index.html';
+function cerrarSesion(btn) {
+  // UX: Feedback visual inmediato para evitar doble clic y dar certeza
+  const textoOriginal = btn.innerHTML;
+  btn.innerHTML = '<span>⏳</span> Cerrando...';
+  btn.style.pointerEvents = 'none'; // Deshabilita clics adicionales
+  btn.style.opacity = '0.7';
+
+  // Pequeño retraso de 300ms para que el usuario perciba la acción 
+  // y redirigimos correctamente al archivo en la raíz
+  setTimeout(() => {
+    window.location.href = 'php/logout.php';
+  }, 300);
 }
 
 // ── DISPONIBILIDAD ──
@@ -695,8 +704,8 @@ async function cargarTrabajadores() {
   }
 
   container.innerHTML = data.data.map(t => `
-    <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--cream);border-radius:12px;margin-bottom:10px;border:1.5px solid transparent;transition:border-color .2s" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='transparent'">
-      <div style="width:50px;height:50px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${t.oficio_icono}</div>
+    <div style="display:flex;align-items:center;gap:16px;padding:16px;background:var(--white);border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px var(--shadow);">
+      <div style="width:50px;height:50px;border-radius:50%;background:var(--cream-dk);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">${t.oficio_icono}</div>
       <div style="flex:1">
         <div style="font-family:var(--ff-head);font-weight:700;font-size:.95rem">${t.nombre_completo}</div>
         <div style="font-size:.82rem;color:var(--earth);margin-top:2px">${t.oficio} · ${t.años_experiencia || 0} años de exp.</div>
@@ -704,7 +713,8 @@ async function cargarTrabajadores() {
       </div>
       <div style="text-align:right">
         ${t.precio_hora ? `<div style="font-family:var(--ff-head);font-weight:700;font-size:.95rem">$${parseInt(t.precio_hora)}/hr</div>` : ''}
-        <a href="tel:${t.telefono}" style="display:inline-block;margin-top:6px;padding:6px 14px;background:var(--ink);color:var(--cream);border-radius:50px;font-size:.78rem;font-weight:700;text-decoration:none">📞 Llamar</a>
+        <!-- Botón Ghost para reducir peso visual -->
+        <a href="tel:${t.telefono}" style="display:inline-block;margin-top:6px;padding:6px 14px;background:transparent;color:var(--ink);border:1.5px solid var(--cream-dk);border-radius:50px;font-size:.78rem;font-weight:700;text-decoration:none;transition: border-color .2s" onmouseover="this.style.borderColor='var(--amber)'" onmouseout="this.style.borderColor='var(--cream-dk)'">📞 Llamar</a>
       </div>
     </div>
   `).join('');
